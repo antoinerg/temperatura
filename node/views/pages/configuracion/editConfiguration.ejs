@@ -14,15 +14,20 @@
     </p>
     <form action="/configuration/editRegister" method="POST">
         <input name="id" type="hidden" value="<%= data[0]['id']%>">
-        <label for="max_temp">Maxima temperatura</label>
-        <input name="max_temp" type="text" value="<%= data[0]['max_temperatura']%>">
-        <label for="min_temp">Minima temperatura</label>
-        <input name="min_temp" type="text" value="<%= data[0]['min_temperatura']%>">
-        <label for="captura">Captura</label>
-        <input name="captura" type="text" value="<%= data[0]['captura']%>">
+        <div>
+            <label for="max_temp">Maxima temperatura</label>
+            <input name="max_temp" type="text" value="<%= data[0]['max_temperatura']%>">
+        </div>
+        <div>
+            <label for="min_temp">Minima temperatura</label>
+            <input name="min_temp" type="text" value="<%= data[0]['min_temperatura']%>">
+        </div>
+
         <input class="btn btn-primary" type="submit" value="Guardar">
     </form>
-    <a href="/configuration">Salir</a>
+    <div>
+        <a class="btn btn-secondary" href="/configuration">Salir</a>
+    </div>
 </body>
 
 </html>

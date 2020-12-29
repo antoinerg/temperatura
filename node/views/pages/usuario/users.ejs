@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div class="contenedor">
+        <div class="nav">
+            <%- include ( "./../../partials/navegacion.ejs") %>
+        </div>
+        <div class="center-content">
+            <% typ.forEach(tipo => {%>
+                <div class="tab">
+                    <div>
+                        <h2>Notificaciones del tipo
+                            <%= tipo %>
+                        </h2>
+                    </div>
+                    <table>
+
+                        <tr class="tab-title">
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Correo</th>
+                        </tr>
+                        <% data.forEach(item => {%>
+                            <% if(item['tipoNotificacion'] == tipo) {%>
+                                <tr>
+                                    <td>
+                                        <%= item['nombre'] %>
+                                    </td>
+                                    <td>
+                                        <%= item['apellido'] %>
+                                    </td>
+                                    <td>
+                                        <%= item['correo'] %>
+                                    </td>
+                                    <td><button> Borrar</button></td>
+
+                                </tr>
+                                <%}%>
+                                    <%})%>
+                    </table>
+                </div>
+
+                <%})%>
+                    <div>
+                        <a class="btn btn-primary" href="user/addUser">Añadir</a>
+                    </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

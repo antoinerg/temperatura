@@ -10,12 +10,14 @@ var connection = mysql.createConnection({
 
 var queries = {
     auth_user: 'SELECT * FROM CtrlTemp_usuarios WHERE usuario = ? AND contrasena = ?',
+    get_users: 'SELECT * FROM CtrlTemp_usuarios',
+    insert_user: 'INSERT INTO CtrlTemp_usuarios(nombre, apellido, usuario, contrasena, correo, tipoNotificacion) VALUES(?,?,?,?,?,?)',
     get_configs: 'SELECT * FROM CtrlTemp_config',
     get_camaras: 'SELECT * FROM CtrlTemp_camara',
-    get_config_id: 'SELECT * FROM CtrlTemp_config WHERE id = ?',
+    get_config_id: 'SELECT cg.id, max_temperatura, min_temperatura, camara, captura FROM CtrlTemp_config cg JOIN CtrlTemp_camara cc ON cg.camara = cc.id WHERE cg.id = ? ',
     get_config_camara: 'SELECT * FROM CtrlTemp_config WHERE camara = ?',
-    update_config: 'UPDATE CtrlTemp_config SET max_temperatura = ?, min_temperatura = ?, captura = ? WHERE id = ?',
-    termo_config: 'SELECT * FROM CtrlTemp_mediciones cm JOIN CtrlTemp_config cc ON cm.id_conf = cc.id WHERE cm.id_conf = ? ORDER BY cm.id DESC limit 1',
+    update_config: 'UPDATE CtrlTemp_config SET max_temperatura = ?, min_temperatura = ? WHERE id = ?',
+    update_camara: 'UPDATE CtrlTemp_camara SET nombre = ?, logo_ip = ?, captura = ? WHERE id = ?',
     get_last_temp: 'SELECT temperatura FROM CtrlTemp_mediciones WHERE id_conf = ? ORDER BY id DESC limit 1'
 };
 

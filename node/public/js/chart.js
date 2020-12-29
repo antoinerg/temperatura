@@ -21,8 +21,7 @@ var layout = {
         pad: 10
     },
     yaxis: {
-        type: 'int',
-        range: [15, 36]
+        type: 'int'
     }
 };
 

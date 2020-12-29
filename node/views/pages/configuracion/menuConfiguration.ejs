@@ -13,26 +13,28 @@
         <div class="nav">
             <%- include ( "./../../partials/navegacion.ejs") %>
         </div>
-        <div>
+        <div class="center-content">
             <div class="conteiner">
                 <% typ.forEach(camara => {%>
-                    <div>
+                    <div class="camara">
                         <div class="title-camara">
-                            <p> Camara
+                            <h2> Camara
                                 <%= camara %>
-                            </p>
+                            </h2>
+                            <div>
+                                <a class="btn btn-primary" href="configuration/camara/<%= camara %>">Editar</a>
+                            </div>
                         </div>
                         <div class="cards">
                             <% data.forEach(conf => {%>
                                 <% if(conf['camara'] == camara) {%>
                                     <div class="card">
                                         <div class="header-card">
-                                            <p>Termocupla id: <span> <%= conf['id'] %> </span></p>
+                                            <p>Termocupla <span> <%= conf['id'] %> </span></p>
                                         </div>
                                         <div class="body-card">
                                             <p>Maxima temperatura: <span> <%= conf['max_temperatura'] %> </span></p>
                                             <p>Minima temperatura: <span> <%= conf['min_temperatura'] %> </span></p>
-                                            <p>Tiempo de captura: <span> <%= conf['captura'] %> </span></p>
                                         </div>
                                         <div class="footer-card ">
                                             <a class="btn btn-primary" href="configuration/<%= conf['id'] %>">Editar</a>

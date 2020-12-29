@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <form action="/configuration/editCamara" method="POST">
+        <input name="id" type="hidden" value="<%= data['id']%>">
+        <div>
+            <label for="nombre">Nombre</label>
+            <input name="nombre" type="text" value="<%= data['nombre']%>">
+        </div>
+        <div>
+            <label for="logo_ip">Logo IP</label>
+            <input name="logo_ip" type="text" value="<%= data['logo_ip']%>">
+        </div>
+        <div>
+            <label for="captura">Tiempo de captura (segundos)</label>
+            <input name="captura" type="text" value="<%= data['captura']%>">
+        </div>
+        <input class="btn btn-primary" type="submit" value="Guardar">
+    </form>
+</body>
+
+</html>

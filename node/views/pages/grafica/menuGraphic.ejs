@@ -13,12 +13,15 @@
         <div class="nav">
             <%- include ("./../../partials/navegacion.ejs") %>
         </div>
-        <div>
-            <% data.forEach(camara => {%>
-                <a href="graphic/<%= camara['id'] %>">
-                    <%= camara['nombre'] %>
-                </a>
-                <% }) %>
+        <div class="center-content">
+            <h2>Camaras de frio:</h2>
+            <div class="cards">
+                <% data.forEach(camara => {%>
+                    <a class="btn btn-secondary" href="graphic/<%= camara['id'] %>">
+                        <%= camara['nombre'] %>
+                    </a>
+                    <% }) %>
+            </div>
         </div>
     </div>
 

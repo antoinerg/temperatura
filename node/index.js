@@ -22,6 +22,7 @@ app.use(express.static(__dirname + '/public'));
 app.use("/", require("./route/routes"));
 app.use("/configuration", require("./route/configuration"));
 app.use("/graphic", require("./route/graphic"))
+app.use("/user", require("./route/user"))
 
 const server = app.listen(port, function() {
     console.log("listen at port " + port);
