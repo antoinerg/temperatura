@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div class="login">
+        <div class="login-form">
+            <form action="auth" method="POST">
+                <div class="form-item">
+                    <label for="username">Usuario</label>
+                    <input name="username" type="text">
+                </div>
+                <div class="form-item">
+                    <label for="password">Contraseña</label>
+                    <input name="password" type="password">
+                </div>
+                <input class="btn btn-primary" type="submit" value="Ingresar">
+            </form>
+            <%- include ("./../partials/messages.ejs") %>
+        </div>
+    </div>
+</body>
+
+</html>

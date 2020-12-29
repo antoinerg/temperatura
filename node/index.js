@@ -1,54 +1,51 @@
-const express = require("express");
-const tmp = require("./db/conexion.js");
-const app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+const express = require('express');
+const bodyParser = require('body-parser');
+var socket = require('socket.io');
+const { getList } = require("./db/conexion.js");
+var session = require('express-session');
+
 const port = 3000;
+const app = express();
 
 app.set('view engine', 'ejs');
+
+app.use(session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true
+}));
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
 
-app.get("/", (req, res) => {
-    res.render("pages/dashboard");
-});
+app.use("/", require("./route/routes"));
+app.use("/configuration", require("./route/configuration"));
+app.use("/graphic", require("./route/graphic"))
 
-http.listen(port, function() {
+const server = app.listen(port, function() {
     console.log("listen at port " + port);
 });
 
+const io = socket(server);
+
 io.on('connection', function(socket) {
-    tmp.connection.connect(function() {
-        tmp.connection.query('SELECT * FROM CtrlTemp_mediciones cm JOIN CtrlTemp_config cc ON cm.id_conf = cc.id WHERE cm.id_conf=1 ORDER BY cm.id DESC limit 1', function(err, result) {
-            if (err) throw err;
-            socket.emit('data', Object.values(JSON.parse(JSON.stringify(result)))[0]["temperatura"]);
-            socket.emit('max', Object.values(JSON.parse(JSON.stringify(result)))[0]["max_temperatura"]);
-            socket.emit('min', Object.values(JSON.parse(JSON.stringify(result)))[0]["min_temperatura"]);
-        })
+    socket.on("camara", function(data) {
+        getData(socket, data);
+        setInterval(function() {
+            getData(socket, data);
+        }, 8000);
     });
 });
 
-io.on('connection', function(socket) {
-    tmp.connection.connect(function() {
-        tmp.connection.query('SELECT * FROM CtrlTemp_mediciones cm JOIN CtrlTemp_config cc ON cm.id_conf = cc.id WHERE cm.id_conf=2 ORDER BY cm.id DESC limit 1', function(err, result) {
-            if (err) throw err;
-            socket.emit('data-2', Object.values(JSON.parse(JSON.stringify(result)))[0]["temperatura"]);
-            socket.emit('max-2', Object.values(JSON.parse(JSON.stringify(result)))[0]["max_temperatura"]);
-            socket.emit('min-2', Object.values(JSON.parse(JSON.stringify(result)))[0]["min_temperatura"]);
-        })
-    });
-});
-
-setInterval(function() {
-    tmp.connection.connect(function() {
-        tmp.connection.query('SELECT temperatura FROM CtrlTemp_mediciones WHERE id_conf=1 ORDER BY id DESC limit 1', function(err, result) {
-            if (err) throw err;
-            console.log(Object.values(JSON.parse(JSON.stringify(result))))
-            io.emit('data', Object.values(JSON.parse(JSON.stringify(result)))[0]["temperatura"]);
-        });
-        tmp.connection.query('SELECT temperatura FROM CtrlTemp_mediciones WHERE id_conf=2 ORDER BY id DESC limit 1', function(err, result) {
-            if (err) throw err;
-            console.log(Object.values(JSON.parse(JSON.stringify(result))))
-            io.emit('data-2', Object.values(JSON.parse(JSON.stringify(result)))[0]["temperatura"]);
+async function getData(socket, camara) {
+    getList("get_config_camara", [camara]).then(function(rows) {
+        var num = 1;
+        rows.forEach(config => {
+            getList("get_last_temp", [config["id"]]).then(function(rows) {
+                socket.emit("data-" + num, rows[0]["temperatura"]);
+                num++;
+            });
         });
     });
-}, 8000);
+}

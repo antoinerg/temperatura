@@ -4,19 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Main Page</title>
+    <title>Graficas - Camaras</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
     <div class="contenedor">
         <div class="nav">
-            <%- include ("./../partials/navegacion.ejs") %>
+            <%- include ("./../../partials/navegacion.ejs") %>
         </div>
         <div>
-            <p>Dashboard</p>
+            <% data.forEach(camara => {%>
+                <a href="graphic/<%= camara['id'] %>">
+                    <%= camara['nombre'] %>
+                </a>
+                <% }) %>
         </div>
     </div>
+
 </body>
 
 </html>

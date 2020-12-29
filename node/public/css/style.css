@@ -1,4 +1,4 @@
-body {
+.page {
     margin: 0 auto;
     max-width: 800px;
 }
@@ -7,17 +7,74 @@ body {
     text-align: center;
 }
 
+.contenedor {
+    display: flex;
+    justify-content: end;
+    width: auto;
+}
+
+a {
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+    color: black;
+}
+
 h2,
 h3,
-p {
+p,
+label {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 15;
     margin: 14px 0;
 }
 
-.alert {
+.btn {
+    padding: 10px 20px;
+    border-radius: 0.2rem;
+    border: 0;
+}
+
+.btn-primary {
+    background-color: rgb(13, 228, 13);
+    color: white;
+}
+
+.btn-secondary {
+    background-color: coral;
+    color: white;
+}
+
+.nav {
     font-size: 20px;
     font-weight: bolder;
+}
+
+.login {
+    background-color: cornsilk;
+    height: 400px;
+    width: 600px;
+    margin: auto;
+}
+
+.login-form {
+    display: flex;
+    justify-content: center;
+}
+
+.login-form form {
+    display: flex;
+}
+
+.btn:hover {
+    cursor: pointer;
+}
+
+.cards {
+    display: flex;
+    justify-content: end;
+}
+
+.card {
+    margin: 0 10px
 }
 
 .temp-body {
@@ -29,8 +86,7 @@ p {
     font-weight: bolder;
 }
 
-.temp-1,
-.temp-2 {
+.temp {
     margin: 0 10px;
     color: white;
     border-radius: 0.4rem;
