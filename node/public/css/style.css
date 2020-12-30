@@ -8,8 +8,6 @@
 }
 
 .contenedor {
-    display: flex;
-    justify-content: end;
     width: auto;
 }
 
@@ -20,7 +18,7 @@ a {
 }
 
 .center-content {
-    margin: 5% 10%;
+    margin: 0 auto;
     width: 100%;
     max-width: 800px;
     text-align: center;
@@ -53,8 +51,24 @@ th {
 }
 
 .nav {
+    background-color: rgb(38, 52, 63);
+    padding: 5px;
+}
+
+.nav ul {
+    display: flex;
+}
+
+.nav li {
+    margin: 0 2rem;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 20px;
-    font-weight: bolder;
+    list-style-type: none;
+}
+
+.nav li a {
+    color: white;
+    text-decoration: none;
 }
 
 .login {
@@ -78,6 +92,11 @@ th {
 .form-item {
     display: flex;
     justify-content: space-between;
+}
+
+.form-edit {
+    width: 500px;
+    margin: 0 auto;
 }
 
 .form-item input {

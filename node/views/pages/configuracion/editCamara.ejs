@@ -9,22 +9,27 @@
 </head>
 
 <body>
-    <form action="/configuration/editCamara" method="POST">
-        <input name="id" type="hidden" value="<%= data['id']%>">
-        <div>
-            <label for="nombre">Nombre</label>
-            <input name="nombre" type="text" value="<%= data['nombre']%>">
-        </div>
-        <div>
-            <label for="logo_ip">Logo IP</label>
-            <input name="logo_ip" type="text" value="<%= data['logo_ip']%>">
-        </div>
-        <div>
-            <label for="captura">Tiempo de captura (segundos)</label>
-            <input name="captura" type="text" value="<%= data['captura']%>">
-        </div>
-        <input class="btn btn-primary" type="submit" value="Guardar">
-    </form>
+    <div class="center-content">
+        <form class="form-edit" action="/configuration/editCamara" method="POST">
+            <input name="id" type="hidden" value="<%= data['id']%>">
+            <div class="form-item">
+                <label for="nombre">Nombre</label>
+                <input name="nombre" type="text" value="<%= data['nombre']%>">
+            </div>
+            <div class="form-item">
+                <label for="logo_ip">Logo IP</label>
+                <input name="logo_ip" type="text" value="<%= data['logo_ip']%>">
+            </div>
+            <div class="form-item">
+                <label for="captura">Tiempo de captura (segundos)</label>
+                <input name="captura" type="text" value="<%= data['captura']%>">
+            </div>
+            <div class="form-item">
+                <input class="btn btn-primary" type="submit" value="Guardar">
+                <a class="btn btn-secondary" href="/configuration">Salir</a>
+            </div>
+        </form>
+    </div>
 </body>
 
 </html>
