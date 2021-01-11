@@ -1,0 +1,19 @@
+<div class="popup-container">
+    <h2 id="title-form">
+    </h2>
+    <form class="form-edit" action="/configuration/editConfig" method="POST">
+        <input id="id" name="id" type="hidden">
+        <div class="form-item">
+            <label for="max_temp">Máxima temperatura</label>
+            <input id="max_t" name="max_temp" type="text">
+        </div>
+        <div class="form-item">
+            <label for="min_temp">Mínima temperatura</label>
+            <input id="min_t" name="min_temp" type="text">
+        </div>
+        <div class="form-item">
+            <input class="btn btn-primary" type="submit" value="Guardar">
+            <a class="btn btn-secondary" onclick="toggle_visibility('editarConfig')">Salir</a>
+        </div>
+    </form>
+</div>

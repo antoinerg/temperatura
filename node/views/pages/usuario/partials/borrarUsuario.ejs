@@ -1,0 +1,10 @@
+<div class="popup-container">
+    <form class="form-edit" action="/user/deleteUser" method="POST">
+        <input id="id_delete" name="id" type="hidden">
+        <h2>¿Esta seguro que quiere eliminar este usuario?</h2>
+        <div class="form-item">
+            <input class="btn btn-primary" type="submit" value="Eliminar">
+            <a class="btn btn-secondary" onclick="toggle_visibility('deleteUser')">Salir</a>
+        </div>
+    </form>
+</div>

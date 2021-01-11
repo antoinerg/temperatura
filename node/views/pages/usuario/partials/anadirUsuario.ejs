@@ -1,0 +1,50 @@
+<div class="popup-container">
+    <form class="form-edit" action="/user/addUser" method="POST">
+        <div class="form-item">
+            <label for="nombre">Nombre</label>
+            <input name="nombre" type="text">
+        </div>
+        <div class="form-item">
+            <label for="apellido">Apellido</label>
+            <input name="apellido" type="text">
+        </div>
+        <div class="form-item">
+            <label for="usuario">Usuario</label>
+            <input name="usuario" type="text">
+        </div>
+        <div class="form-item">
+            <label for="contrasena">Contraseña</label>
+            <input name="contrasena" type="password">
+        </div>
+        <div class="form-item">
+            <label for="correo">Correo</label>
+            <input name="correo" type="email">
+        </div>
+        <div class="form-item">
+            <label for="tipoNotificacion">Tipo de Notificación</label>
+            <select name="tipoNotificacion">
+                <option value="none" selected disabled hidden>Seleccionar Tipo</option>
+                <% for(var i=0; i < typ.length; i++) {%>
+                    <option value="<%= typ[i] %>"> <%= typ[i] %></option>
+                    <% } %>
+            </select>
+        </div>
+        <div class="form-item">
+            <label for="rol">Rol</label>
+            <select name="rol">
+                <option value="none" selected disabled hidden>Seleccionar Tipo</option>
+                <% for(var i=0; i < rols.length; i++) {%>
+                    <option value="<%= rols[i] %>"> <%= rols[i] %></option>
+                    <% } %>
+            </select>
+        </div>
+        <div class="form-item">
+            <label for="envioCorreo">Activo para envio</label>
+            <input name="envioCorreo" type="checkbox" checked>
+        </div>
+        <div class="form-item">
+            <input class="btn btn-primary" type="submit" value="Guardar">
+            <a class="btn btn-secondary" onclick="toggle_visibility('addUser')">Salir</a>
+        </div>
+    </form>
+</div>

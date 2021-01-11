@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div class="contenedor">
+        <div class="nav">
+            <%- include ("./../../partials/navegacion.ejs") %>
+        </div>
+        <div class="center-content">
+            <div class="f-rght">
+                <a id="gen-pdf" class="btn btn-primary" disabled>Generar PDF</a>
+            </div>
+            <div>
+                <h2>Gráfica de rangos de picos de Temperatura</h2>
+            </div>
+            <div class="form-item cam-config">
+                <label for="">Fecha Inicio</label>
+                <input id="start" type="date">
+                <label for="">Fecha Fin</label>
+                <input id="end" type="date">
+            </div>
+            <div class="form-item cam-config">
+                <label>Cámara Frigorífica</label>
+                <select id="camfrio">
+                    <option value="" selected disabled hidden>Seleccionar Cámara</option>
+                </select>
+
+                <label>Temocupla</label>
+                <select id="termo">
+                    <option value="" selected disabled hidden> Seleccionar Termocupla</option>
+                </select>
+            </div>
+            <div id="range-chart"></div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="/js/range_chart.js"></script>
+<script>
+    function getFormatDate(date) {
+        var mes = date.getMonth() + 1;
+        if (mes < 10 && date.getDate() < 10) {
+            return date.getFullYear() + "-0" + mes + "-0" + date.getDate();
+        } else if (mes < 10) {
+            return date.getFullYear() + "-0" + mes + "-" + date.getDate();
+        } else if (date.getDate() < 10) {
+            return date.getFullYear() + "-" + mes + "-0" + date.getDate();
+        } else {
+            return date.getFullYear() + "-" + mes + "-" + date.getDate();
+        }
+    }
+    var hoy = new Date();
+    $("#end").val(getFormatDate(hoy));
+    $("#end").attr("max", getFormatDate(hoy));
+    $("#start").attr("max", getFormatDate(hoy));
+    hoy.setDate(hoy.getDate() - 15);
+    $("#start").val(getFormatDate(hoy));
+</script>
+<script>
+    function agregarOpcion(select, msg, valor) {
+        var option = document.createElement("option");
+        option.value = valor;
+        option.text = msg + valor;
+        select.appendChild(option);
+    }
+    $.ajax({
+        method: "POST",
+        url: "/getCamaras",
+        dataType: "json",
+        success: function(response) {
+            var ids = response.data;
+            var sel = document.getElementById("camfrio");
+            ids.forEach(item => {
+                agregarOpcion(sel, "Cámara", item);
+            });
+
+        }
+    });
+
+    document.getElementById("camfrio").onchange = function() {
+        $.ajax({
+            method: "POST",
+            url: "/getConfigsByCam",
+            data: {
+                id: $("#camfrio").val()
+            },
+            dataType: "json",
+            success: function(response) {
+                var configs = response.data;
+                $('#termo option[value != ""]').remove();
+                var sel = document.getElementById("termo");
+                configs.forEach(item => {
+                    agregarOpcion(sel, "Termocupla ", item);
+                });
+                if ($("#termo").val() != "") {
+                    refresh();
+                }
+            }
+        });
+    };
+    document.getElementById("termo").onchange = function() {
+        $("#gen-pdf").attr("disabled", false);
+        $("#gen-pdf").attr("onclick", "PDF()");
+        refresh();
+    };
+    document.getElementById("start").onchange = function() {
+        refresh();
+    };
+    document.getElementById("end").onchange = function() {
+        refresh();
+    };
+</script>
+
+<script>
+    function PDF() {
+        Plotly.toImage('range-chart').then(function(url_img) {
+            $.ajax({
+                method: "POST",
+                url: "/getPDF",
+                data: {
+                    img: url_img,
+                    cam: $("#camfrio").val(),
+                    conf: $("#termo").val(),
+                    start: $("#start").val(),
+                    end: $("#end").val()
+                },
+                dataType: "json",
+                success: function() {
+                    alert("PDF creado en la carpeta public/reportes");
+                }
+            });
+            alert("PDF creado en la carpeta public/reportes");
+        });
+    }
+</script>

@@ -1,21 +1,32 @@
 const express = require('express');
 const route = express.Router();
-const { getList } = require("./../db/conexion.js");
+const Configuration = require("./../controller/configuration.js");
+const Camara = require("./../controller/camara.js");
 
 route.get("/", (req, res) => {
     if (req.session.loggedin) {
-        getList("get_camaras").then(function(rows) {
+        Camara.doQuery("get_camaras").then(function(rows) {
             res.render("pages/grafica/menuGraphic", { data: rows });
-        }).catch((err) => setImmediate(() => { throw err; }));
+        }).catch((err) => setImmediate(() => {
+            res.render("pages/error", { msg: err.code });
+        }));
     } else {
         res.render("pages/login", { msg: "Debe iniciar sesion primero" });
     }
 });
 
 route.get("/:id", (req, res) => {
-    getList("get_config_camara", [req.params.id]).then(function(rows) {
-        res.render("pages/grafica/graphic", { data: rows });
-    }).catch((err) => setImmediate(() => { throw err; }));
+    Configuration.doQuery("get_configs").then(function(rows) {
+        let tmp = [];
+        rows.forEach(element => {
+            if (element["camara"] == req.params.id) {
+                tmp.push(element);
+            }
+        });
+        res.render("pages/grafica/graphic", { data: tmp });
+    }).catch((err) => setImmediate(() => {
+        res.render("pages/error", { msg: err.code });
+    }));
 });
 
 module.exports = route;

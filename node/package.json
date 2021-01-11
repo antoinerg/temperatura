@@ -9,10 +9,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.1",
     "chart.js": "^2.9.4",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
+    "html-pdf": "^2.2.0",
     "mysql": "^2.18.1",
     "plotly.js": "^1.58.2",
     "sequelize": "^6.3.5",

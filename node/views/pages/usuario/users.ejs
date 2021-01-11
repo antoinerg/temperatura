@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Usuarios</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -14,6 +14,9 @@
             <%- include ( "./../../partials/navegacion.ejs") %>
         </div>
         <div class="center-content">
+            <div class="f-rght">
+                <a class="btn btn-primary " onclick="toggle_visibility('addUser')">Añadir</a>
+            </div>
             <% typ.forEach(tipo => {%>
                 <div class="tab">
                     <div>
@@ -27,6 +30,9 @@
                             <th>Nombre</th>
                             <th>Apellido</th>
                             <th>Correo</th>
+                            <th>Usuario</th>
+                            <th>Rol</th>
+                            <th></th>
                         </tr>
                         <% data.forEach(item => {%>
                             <% if(item['tipoNotificacion'] == tipo) {%>
@@ -40,7 +46,16 @@
                                     <td>
                                         <%= item['correo'] %>
                                     </td>
-
+                                    <td>
+                                        <%= item['usuario'] %>
+                                    </td>
+                                    <td>
+                                        <%= item['rol'] %>
+                                    </td>
+                                    <td>
+                                        <a id="editar" class="btn btn-primary" onclick="toggle_visibility('editUser');edit_user('<%= item.id %>')">Editar</a>
+                                        <a class="btn btn-secondary" onclick="toggle_visibility('deleteUser');delete_user('<%= item.id %>')">Borrar</a>
+                                    </td>
                                 </tr>
                                 <%}%>
                                     <%})%>
@@ -48,12 +63,68 @@
                 </div>
 
                 <%})%>
-                    <div>
-                        <a class="btn btn-primary" href="user/addUser">Añadir</a>
-                    </div>
         </div>
+    </div>
+    <div class="popup-position" id="addUser">
+        <%- include('./partials/anadirUsuario')%>
+    </div>
+
+    <div class="popup-position" id="editUser">
+        <%- include('./partials/editarUsuario')%>
+    </div>
+
+    <div class="popup-position" id="deleteUser">
+        <%- include('./partials/borrarUsuario')%>
     </div>
 
 </body>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    $("input:checkbox").val(1);
+
+    function toggle_visibility(id) {
+        var e = document.getElementById(id);
+
+        if (e.style.display == 'block') {
+            e.style.display = 'none';
+        } else {
+            e.style.display = 'block';
+        }
+    }
+
+    function edit_user(id) {
+        $.ajax({
+            method: "POST",
+            url: "/user/getInfoUser",
+            data: {
+                cod: id
+            },
+            success: function(response) {
+                $("#id").val(response.data[0].id);
+                $("#name").val(response.data[0].nombre);
+                $("#lastname").val(response.data[0].apellido);
+                $("#user").val(response.data[0].usuario);
+                $("#pass").val(response.data[0].contrasena);
+                $("#email").val(response.data[0].correo);
+                $("#tipon").val(response.data[0].tipoNotificacion);
+                $("#rol_t").val(response.data[0].rol);
+                if (response.data[0].tipoNotificacion == "Alerta") {
+                    $("#envio").attr("disabled", true);
+                } else {
+                    $("#envio").attr("disabled", false);
+                }
+                if (response.data[0].envioCorreo > 0) {
+                    $("#envio").attr("checked", true);
+                } else {
+                    $("#envio").removeAttr("checked");
+                }
+            }
+        });
+    }
+
+    function delete_user(id) {
+        $("#id_delete").val(id)
+    }
+</script>
 
 </html>

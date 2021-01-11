@@ -1,53 +1,55 @@
 const express = require('express');
 const route = express.Router();
-const { getList } = require("./../db/conexion.js");
+const Configuration = require("./../controller/configuration.js");
+const Camara = require("./../controller/camara.js");
 
 route.get("/", (req, res) => {
     if (req.session.loggedin) {
-        getList("get_configs").then(function(rows) {
-            let camaras = [];
+        Configuration.doQuery("get_configs").then(function(rows) {
+            let camaras = {
+                id: [],
+                captura: []
+            };
             rows.forEach(element => {
-                if (camaras.indexOf(element["camara"]) < 0) {
-                    camaras.push(element["camara"]);
+                if (camaras["id"].indexOf(element["camara"]) < 0) {
+                    camaras["id"].push(element["camara"]);
+                    camaras["captura"].push(element["captura"]);
                 }
             });
             res.render("pages/configuracion/menuConfiguration", { data: rows, typ: camaras });
-        }).catch((err) => setImmediate(() => { throw err; }));
+        }).catch((err) => setImmediate(() => {
+            res.render("pages/error", { msg: err.code });
+        }));
     } else {
         res.render("pages/login", { msg: "Debe iniciar sesion primero" });
     }
 });
 
-route.get("/:id", (req, res) => {
-    var id = req.params.id;
-    getList("get_config_id", [id]).then(function(rows) {
-        res.render("pages/configuracion/editConfiguration", { data: rows })
+route.post("/addConfig", (req, res) => {
+    const { max_temp, min_temp, camara } = req.body;
+    Configuration.doQuery("insert_config", [max_temp, min_temp, camara]).then(function(rows) {
+        res.redirect("/configuration")
     }).catch((err) => setImmediate(() => { throw err; }));
 });
 
-route.get("/camara/:id", (req, res) => {
-    var id = req.params.id;
-    getList("get_camaras").then(function(rows) {
-        rows.forEach(item => {
-            if (item["id"] == id) {
-                res.render("pages/configuracion/editCamara", { data: item });
-            }
-        });
-    });
-});
-
-route.post("/editRegister", (req, res) => {
+route.post("/editConfig", (req, res) => {
     const { id, max_temp, min_temp } = req.body;
-    getList("update_config", [max_temp, min_temp, id]).then(function(rows) {
+    Configuration.doQuery("update_config", [max_temp, min_temp, id]).then(function(rows) {
         res.redirect("/configuration")
-    });
+    }).catch((err) => setImmediate(() => { throw err; }));
 });
 
 route.post("/editCamara", (req, res) => {
-    const { id, nombre, logo_ip, captura } = req.body;
-    getList("update_camara", [nombre, logo_ip, captura, id]).then(function(rows) {
+    const { id, captura } = req.body;
+    Camara.doQuery("update_camara", [captura, id]).then(function(rows) {
         res.redirect("/configuration")
-    });
+    }).catch((err) => setImmediate(() => { throw err; }));
+});
+
+route.post("/getInfoConfig", (req, res) => {
+    Configuration.doQuery("get_info_config", [req.body.cod]).then(function(rows) {
+        res.send({ data: rows });
+    })
 });
 
 module.exports = route;

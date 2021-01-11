@@ -14,14 +14,15 @@ for (let index = 1; index <= num_tem; index++) {
 }
 
 var layout = {
-    title: 'Variacion de Temperatura',
+    title: 'Variación de Temperatura',
     height: 550,
     plot_bgcolor: 'rgba(200,255,0,0.1)',
     margin: {
         pad: 10
     },
     yaxis: {
-        type: 'int'
+        type: 'int',
+        range: [0, 30]
     }
 };
 
@@ -101,8 +102,5 @@ var interval = setInterval(function() {
             Plotly.redraw('line-chart');
             cnt--;
         }
-        socket.on("stop", function(params) {
-            clearInterval(interval);
-        })
     },
     6000);
